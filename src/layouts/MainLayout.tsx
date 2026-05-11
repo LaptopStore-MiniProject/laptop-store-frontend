@@ -5,11 +5,13 @@ import Footer from '../components/common/Footer';
 export default function MainLayout()
 {
     return(
-        <div className="flex flex-col min-h-screen bg-gray-50">
+        <div className="min-h-screen flex flex-col bg-background text-on-background">
             <Header />
-            <main className="flex-grow w-full max-w-7xl mx-auto px-6 py-8">
-                <Outlet />
-            </main>
+
+                <main className="flex-grow w-full">
+                    <Outlet />
+                </main>
+
             <Footer />
         </div>
     )

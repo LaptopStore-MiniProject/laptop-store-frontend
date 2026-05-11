@@ -27,27 +27,36 @@ export interface Product {
   image: string;
   description: string;
   stock: number;
+
+  cpu?: string;
+  ram?: string;
+  storage?: string;
+  screenSize?: string;
+  vga?: string;
 }
 
 export interface ProductQueryParams {
   pageIndex?: number;
   pageSize?: number;
   keyword?: string;
+
   categoryId?: number;
   brandId?: number;
+
+  // chuẩn bị sẵn cho backend sau này
+  brandIds?: number[];
+  categoryIds?: number[];
+  cpus?: string[];
+  rams?: string[];
+  storages?: string[];
+  vgas?: string[];
+  screenSizes?: string[];
+
   minPrice?: number;
   maxPrice?: number;
   sortBy?: string;
 }
 
-export interface Pagination {
-totalRecords: number;
-  pageIndex: number;
-  pageSize: number;
-  totalPages: number;
-  hasPreviousPage: boolean;
-  hasNextPage: boolean;
-}
 export interface ProductImageDto {
   id: number;
   imageUrl: string;
@@ -55,5 +64,25 @@ export interface ProductImageDto {
 }
 export interface PagedResult<T> {
   items: T[];
-  pagination: Pagination | null;
+  totalRecords: number;
+  pageIndex: number;
+  pageSize: number;
+  totalPages: number;
+  hasPreviousPage: boolean;
+  hasNextPage: boolean;
+}
+
+export interface PaginationInfo {
+  totalRecords: number;
+  pageIndex: number;
+  pageSize: number;
+  totalPages: number;
+  hasPreviousPage: boolean;
+  hasNextPage: boolean;
+}
+
+export interface ApiResponse<T> {
+  status: number;
+  message: string;
+  data: T;
 }
