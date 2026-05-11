@@ -44,7 +44,7 @@ const processQueue = (error: Error | null, token: string | null = null) => {
 const axiosClient = axios.create(
     {
         // Cấu hình baseURL mặc định cho tất cả request, giúp dễ dàng thay đổi endpoint API khi cần (vd: dev vs prod)
-        baseURL: env.apiUrl,
+        baseURL: import.meta.env.VITE_API_URL,
         headers: {
             // Mặc định báo cho Backend (vd: ASP.NET Core) biết data gửi lên là định dạng JSON
             "Content-Type": "application/json",
