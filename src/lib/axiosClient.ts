@@ -23,10 +23,12 @@ const processQueue = (error: Error | null, token: string | null = null) => {
         {
             if(error)
             {
+                console.error("[AxiosClient] : Processing failed queue, rejecting request", error);
                 prom.reject(error); // Xin thất bại -> Cho toàn bộ request đang chờ chết luôn
             }
             else
             {
+                console.log("[AxiosClient] : Processing failed queue, resolving request with new token", token);
                 prom.resolve(token as string); // Xin thành công -> Phát token mới cho các request đang chờ
             }
         })
