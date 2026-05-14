@@ -1,4 +1,5 @@
 import axiosClient from "../../../lib/axiosClient";
+import qs from "qs";
 import type { ProductQueryParams } from "../types/product.types";
 
 export const productApi = 
@@ -6,7 +7,11 @@ export const productApi =
     getProducts:   (params? : ProductQueryParams) => {
         // Mẹo: Bỏ chữ 'async' và 'await' ở đây đi vì axiosClient.get bản thân nó đã trả về 1 Promise rồi.
         // Viết return axiosClient.get(...) sẽ sạch và chuẩn tối ưu hơn.
-        return  axiosClient.get("/Products/query", { params });
+        return  axiosClient.get("/Products/query", { 
+            params, 
+            paramsSerializer: (params) => 
+                qs.stringify(params, { arrayFormat: "repeat" }) 
+        });
     },
 
     getProductById:  (id: string | number) => {

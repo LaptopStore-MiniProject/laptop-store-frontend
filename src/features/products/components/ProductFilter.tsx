@@ -9,23 +9,24 @@ interface ProductFilterProps {
 }
 
 const brandOptions = [
-  { id: 1, label: "Apple" },
-  { id: 2, label: "ASUS" },
+  { id: 1, label: "ASUS" },
+  { id: 2, label: "Acer" },
   { id: 3, label: "Dell" },
-  { id: 4, label: "HP" },
-  { id: 5, label: "Lenovo" },
-  { id: 6, label: "MSI" },
-  { id: 7, label: "Acer" },
+  { id: 4, label: "Apple" },
+  { id: 5, label: "HP" },
+  { id: 6, label: "Lenovo" },
+  { id: 7, label: "MSI" },
   { id: 8, label: "Gigabyte" },
+  { id: 9, label: "Huawei" },
+  { id: 10, label: "Microsoft" },
 ];
 
 const categoryOptions = [
-  { id: 1, label: "Gaming" },
-  { id: 2, label: "Văn phòng" },
-  { id: 3, label: "Đồ họa" },
-  { id: 4, label: "Mỏng nhẹ" },
-  { id: 5, label: "Sinh viên" },
-  { id: 6, label: "Lập trình" },
+  { id: 1, label: "Laptop Gaming" },
+  { id: 2, label: "Laptop Văn phòng - Sinh viên" },
+  { id: 3, label: "Laptop Cao cấp - Doanh nhân" },
+  { id: 4, label: "Laptop Đồ họa - Sáng tạo nội dung" },
+  { id: 5, label: "Laptop 2 trong 1 - Cảm ứng" },
 ];
 
 const cpuOptions = [
@@ -46,41 +47,101 @@ const ramOptions = [
   { id: "64gb", label: "64GB" },
 ];
 
+const vgaOptions = [
+  { id: "Intel Iris Xe", label: "Intel Iris Xe" },
+  { id: "Intel UHD Graphics", label: "Intel UHD Graphics" },
+  { id: "RTX 3050", label: "RTX 3050" },
+  { id: "RTX 3060", label: "RTX 3060" },
+  { id: "RTX 4050", label: "RTX 4050" },
+  { id: "RTX 4060", label: "RTX 4060" },
+  { id: "RTX 4070", label: "RTX 4070" },
+  { id: "RTX 4080", label: "RTX 4080" },
+  { id: "RX 6800S", label: "RX 6800S" },
+  { id: "Apple GPU", label: "Apple GPU" },
+];
+
+const storageOptions = [
+  { id: "256GB SSD", label: "256GB SSD" },
+  { id: "512GB SSD", label: "512GB SSD" },
+  { id: "1TB SSD", label: "1TB SSD" },
+  { id: "2TB SSD", label: "2TB SSD" },
+  { id: "128GB SSD", label: "128GB SSD" },
+  { id: "HDD", label: "HDD" },
+];
+
+const screenSizeOptions = [
+  { id: "13 inch", label: "13 inch" },
+  { id: "13.3 inch", label: "13.3 inch" },
+  { id: "14 inch", label: "14 inch" },
+  { id: "15.6 inch", label: "15.6 inch" },
+  { id: "16 inch", label: "16 inch" },
+  { id: "17.3 inch", label: "17.3 inch" },
+];
+
 export default function ProductFilter({
   onApplyFilter,
   onResetFilter,
 }: ProductFilterProps) {
   const [maxPrice, setMaxPrice] = useState(50000000);
 
-  const [selectedBrandIds, setSelectedBrandIds] = useState<Array<number | string>>([]);
-  const [selectedCategoryIds, setSelectedCategoryIds] = useState<Array<number | string>>([]);
+  const [selectedBrandIds, setSelectedBrandIds] = useState<
+    Array<number | string>
+  >([]);
+  const [selectedCategoryIds, setSelectedCategoryIds] = useState<
+    Array<number | string>
+  >([]);
   const [selectedCpus, setSelectedCpus] = useState<Array<number | string>>([]);
   const [selectedRams, setSelectedRams] = useState<Array<number | string>>([]);
+  const [selectedVgas, setSelectedVgas] = useState<Array<number | string>>([]);
+  const [selectedStorages, setSelectedStorages] = useState<
+    Array<number | string>
+  >([]);
+  const [selectedScreenSizes, setSelectedScreenSizes] = useState<
+    Array<number | string>
+  >([]);
 
   const hasFilter =
     maxPrice !== 50000000 ||
     selectedBrandIds.length > 0 ||
     selectedCategoryIds.length > 0 ||
     selectedCpus.length > 0 ||
-    selectedRams.length > 0;
+    selectedRams.length > 0 ||
+    selectedVgas.length > 0 ||
+    selectedStorages.length > 0 ||
+    selectedScreenSizes.length > 0;
 
   function handleApplyFilter() {
-    onApplyFilter({
+    const params: ProductQueryParams = {
       pageIndex: 1,
       pageSize: 12,
       minPrice: 0,
       maxPrice,
+    };
 
-      // Tạm thời nếu backend chỉ nhận 1 brandId/categoryId,
-      // mình lấy cái đầu tiên.
-      brandId:
-        selectedBrandIds.length > 0 ? Number(selectedBrandIds[0]) : undefined,
+    if (selectedBrandIds.length > 0) {
+      params.brandIds = selectedBrandIds.map(Number);
+    }
 
-      categoryId:
-        selectedCategoryIds.length > 0
-          ? Number(selectedCategoryIds[0])
-          : undefined,
-    });
+    if (selectedCategoryIds.length > 0) {
+      params.categoryIds = selectedCategoryIds.map(Number);
+    }
+    if (selectedCpus.length > 0) {
+      params.cpus = selectedCpus.map(String);
+    }
+    if (selectedRams.length > 0) {
+      params.rams = selectedRams.map(String);
+    }
+    if (selectedVgas.length > 0) {
+      params.vgas = selectedVgas.map(String);
+    }
+    if (selectedStorages.length > 0) {
+      params.storages = selectedStorages.map(String);
+    }
+    if (selectedScreenSizes.length > 0) {
+      params.screenSizes = selectedScreenSizes.map(String);
+    }
+
+    onApplyFilter(params);
   }
 
   function handleResetFilter() {
@@ -89,6 +150,9 @@ export default function ProductFilter({
     setSelectedCategoryIds([]);
     setSelectedCpus([]);
     setSelectedRams([]);
+    setSelectedVgas([]);
+    setSelectedStorages([]);
+    setSelectedScreenSizes([]);
 
     onResetFilter();
   }
@@ -153,6 +217,7 @@ export default function ProductFilter({
         selectedValues={selectedCpus}
         onChange={setSelectedCpus}
         defaultVisibleCount={4}
+        defaultOpen={false}
       />
 
       <FilterSection
@@ -161,6 +226,32 @@ export default function ProductFilter({
         selectedValues={selectedRams}
         onChange={setSelectedRams}
         defaultVisibleCount={4}
+        defaultOpen={false}
+      />
+      <FilterSection
+        title="VGA"
+        options={vgaOptions}
+        selectedValues={selectedVgas}
+        onChange={setSelectedVgas}
+        defaultVisibleCount={4}
+        defaultOpen={false}
+      />
+      <FilterSection
+        title="Storage"
+        options={storageOptions}
+        selectedValues={selectedStorages}
+        onChange={setSelectedStorages}
+        defaultVisibleCount={4}
+        defaultOpen={false}
+      />
+
+      <FilterSection
+        title="Screen Size"
+        options={screenSizeOptions}
+        selectedValues={selectedScreenSizes}
+        onChange={setSelectedScreenSizes}
+        defaultVisibleCount={4}
+        defaultOpen={false}
       />
 
       <div className="flex flex-col gap-3">

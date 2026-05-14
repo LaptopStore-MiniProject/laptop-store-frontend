@@ -1,5 +1,5 @@
 import { CreditCard, Minus, Plus, Trash2 } from "lucide-react";
-import { MOCK_PRODUCTS } from "../../lib/mockData";
+import { MOCK_PRODUCTS } from "../../features/products/utils/mockData";
 import { formatCurrency } from "../../utils/formatCurrency";
 
 const cartItems = [
