@@ -7,7 +7,7 @@ import type {
   Product,
   ProductApiResponse,
 } from "../../features/products/types/product.types";
-import { MOCK_PRODUCTS } from "../../lib/mockData";
+import { MOCK_PRODUCTS } from "../../features/products/utils/mockData";
 import { formatCurrency } from "../../utils/formatCurrency";
 
 export default function ProductDetailPage() {

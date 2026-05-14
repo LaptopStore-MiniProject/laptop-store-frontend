@@ -1,7 +1,7 @@
 import { ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
 import ProductCard from "../../products/components/ProductCard";
-import { MOCK_PRODUCTS } from "../../../lib/mockData";
+import { MOCK_PRODUCTS } from "../../products/utils/mockData";
 
 export default function BestSellers() {
   return (

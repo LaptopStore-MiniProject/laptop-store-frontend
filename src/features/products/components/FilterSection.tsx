@@ -12,6 +12,7 @@ interface FilterSectionProps {
   selectedValues: Array<number | string>;
   onChange: (values: Array<number | string>) => void;
   defaultVisibleCount?: number;
+  defaultOpen?: boolean;
 }
 
 export default function FilterSection({
@@ -20,8 +21,9 @@ export default function FilterSection({
   selectedValues,
   onChange,
   defaultVisibleCount = 4,
+  defaultOpen = true,
 }: FilterSectionProps) {
-  const [isOpen, setIsOpen] = useState(true);
+  const [isOpen, setIsOpen] = useState(defaultOpen);
   const [showAll, setShowAll] = useState(false);
 
   const visibleOptions = useMemo(() => {
