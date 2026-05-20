@@ -1,20 +1,66 @@
-import { ArrowRight, Lock, Mail,ArrowLeft } from "lucide-react";
-import { Link,useNavigate } from "react-router-dom";
-
+import { ArrowRight, Lock, Mail, ArrowLeft } from "lucide-react";
+import { Link, useNavigate } from "react-router-dom";
+import { authApi } from "../../features/auth/api/authApi";
+import type {
+  ApiResponse,
+  AuthResponse,
+} from "../../features/auth/types/auth.types";
+import { saveAuth } from "../../features/auth/utils/authStorage";
+import { useState } from "react";
 
 export default function LoginPage() {
-    const navigate = useNavigate();
+  const navigate = useNavigate();
+  // usestate for auth
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
+
+  async function handleLoginSubmit(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+
+    if (!email.trim() || !password.trim()) {
+      setErrorMessage("Vui lòng nhập email và mật khẩu.");
+      return;
+    }
+
+    try {
+      setLoading(true);
+      setErrorMessage("");
+      const response = await authApi.login({
+        email: email.trim(),
+        password,
+      });
+
+      const apiResponse = response as unknown as ApiResponse<AuthResponse>;
+
+      saveAuth(apiResponse.data);
+
+      // [LoginPage] : Thêm dòng này để chuyển hướng về Home
+      navigate("/");
+    } catch (error: any) {
+      console.error("[LoginPage] Login failed:", error);
+
+      const message =
+        error?.response?.data?.message || "Email hoặc mật khẩu không đúng.";
+
+      setErrorMessage(message);
+    } finally {
+      setLoading(false);
+    }
+  }
+
   return (
     <div className="min-h-screen bg-surface flex items-center justify-center px-gutter py-12">
-        {/* Back button */}
-        <button
-            type="button"
-            onClick={() => navigate("/")}
-            className="absolute top-6 left-6 flex items-center gap-2 text-primary font-semibold hover:underline z-20"
-        >
-            <ArrowLeft className="w-5 h-5" />
-            Back
-        </button>
+      {/* Back button */}
+      <button
+        type="button"
+        onClick={() => navigate("/")}
+        className="absolute top-6 left-6 flex items-center gap-2 text-primary font-semibold hover:underline z-20"
+      >
+        <ArrowLeft className="w-5 h-5" />
+        Back
+      </button>
       <main className="w-full max-w-[460px]">
         <div className="bg-surface-container-lowest border border-outline-variant rounded-2xl shadow-lg p-8 flex flex-col gap-6">
           <div className="text-center">
@@ -34,7 +80,7 @@ export default function LoginPage() {
             </p>
           </div>
 
-          <form className="flex flex-col gap-5">
+          <form onSubmit={handleLoginSubmit} className="flex flex-col gap-5">
             <div className="flex flex-col gap-2">
               <label
                 htmlFor="email"
@@ -49,6 +95,8 @@ export default function LoginPage() {
                 <input
                   type="email"
                   id="email"
+                  value={email}
+                  onChange={(event) => setEmail(event.target.value)}
                   placeholder="name@example.com"
                   className="w-full bg-surface-container-lowest border border-outline-variant rounded-lg py-3 pl-11 pr-4 text-on-surface font-medium focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all placeholder:text-outline"
                 />
@@ -69,11 +117,17 @@ export default function LoginPage() {
                 <input
                   type="password"
                   id="password"
-                  placeholder="••••••••"
+                  value={password}
+                  onChange={(event) => setPassword(event.target.value)}
+                  placeholder="Enter your password"
                   className="w-full bg-surface-container-lowest border border-outline-variant rounded-lg py-3 pl-11 pr-4 text-on-surface font-medium focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all placeholder:text-outline"
                 />
               </div>
             </div>
+
+            {errorMessage && (
+              <p className="text-sm text-error font-medium">{errorMessage}</p>
+            )}
 
             <div className="flex items-center justify-between mt-1">
               <label className="flex items-center gap-2 cursor-pointer group">
@@ -97,9 +151,10 @@ export default function LoginPage() {
 
             <button
               type="submit"
+              disabled={loading}
               className="mt-4 w-full bg-primary text-on-primary font-semibold text-base py-3 rounded-lg hover:brightness-110 transition-all duration-300 flex justify-center items-center gap-2 shadow-sm"
             >
-              Đăng nhập
+              {loading ? "Đang đăng nhập..." : "Đăng nhập"}
               <ArrowRight className="w-5 h-5" />
             </button>
           </form>
