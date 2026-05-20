@@ -4,6 +4,8 @@ export const STORAGE_KEY =
     ACCESS_TOKEN: "accessToken",
     
     REFRESH_TOKEN: "refreshToken",
+    
+    USER_KEY: "user"
 } as const; // as const để ép kiểu literal, giúp auto-complete tốt hơn khi sử dụng STORAGE_KEY.ACCESS_TOKEN thay vì phải nhớ chính xác chuỗi "accessToken"
 
 /*
