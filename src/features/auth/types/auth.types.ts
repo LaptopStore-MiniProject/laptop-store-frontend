@@ -7,10 +7,6 @@ export interface ApiResponse<T>{
 export interface AuthResponse{
     accessToken: string;
     expiredAtUtc: string;
-
-    refreshToken: string;
-    refreshTokenExpiredAtUtc: string;
-
     userId: string;
     fullName: string;
     email: string;
@@ -23,20 +19,10 @@ export interface LoginRequest{
     password: string;
 }
 
-export interface RefreshTokenRequest{
-    accessToken: string;
-    refreshToken: string;
-}
-
 export interface RegisterRequest{
     fullName: string;
     email: string;
     password: string;
     phoneNumber?: string ;
     address?: string;
-}
-
-
-export interface RevokeRefreshTokenRequest{
-    refreshToken: string;
 }

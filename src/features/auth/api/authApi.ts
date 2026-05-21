@@ -2,8 +2,6 @@ import axiosClient from "../../../lib/axiosClient";
 import type {
   LoginRequest,
   RegisterRequest,
-  RefreshTokenRequest,
-  RevokeRefreshTokenRequest,
 } from "../types/auth.types";
 
 export const authApi = {
@@ -14,10 +12,10 @@ export const authApi = {
   register: (data: RegisterRequest) => {
     return axiosClient.post("/Auth/register",data)
   },
-  refreshToken: (data: RefreshTokenRequest) => {
-    return axiosClient.post("/Auth/refresh-token",data)
+  refreshToken: () => {
+    return axiosClient.post("/Auth/refresh-token")
   },
-  revokeRefreshToken: (data: RevokeRefreshTokenRequest) => {
-    return axiosClient.post("/Auth/revoke-refresh-token",data)
-  }
+  logout: () => {
+    return axiosClient.post("/Auth/logout")
+  } 
 };
