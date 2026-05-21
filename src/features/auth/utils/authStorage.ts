@@ -3,7 +3,6 @@ import { STORAGE_KEY } from "../../../constants/index"
 
 export function saveAuth(auth: AuthResponse) {
     localStorage.setItem(STORAGE_KEY.ACCESS_TOKEN,auth.accessToken);
-    localStorage.setItem(STORAGE_KEY.REFRESH_TOKEN,auth.refreshToken);
 
     localStorage.setItem(
         STORAGE_KEY.USER_KEY,
@@ -13,17 +12,12 @@ export function saveAuth(auth: AuthResponse) {
             email: auth.email,
             roleName: auth.roleName,
             expiredAtUtc: auth.expiredAtUtc,
-            refreshTokenExpiredAtUtc: auth.refreshTokenExpiredAtUtc 
         })
     );
 }
 
 export function getAccessToken(){
     return localStorage.getItem(STORAGE_KEY.ACCESS_TOKEN)
-}
-
-export function getRefreshToken(){
-    return localStorage.getItem(STORAGE_KEY.REFRESH_TOKEN)
 }
 
 export function getCurrentUser(){
@@ -40,7 +34,6 @@ export function getCurrentUser(){
 
 export function clearAuth(){
     localStorage.removeItem(STORAGE_KEY.ACCESS_TOKEN)
-    localStorage.removeItem(STORAGE_KEY.REFRESH_TOKEN)
     localStorage.removeItem(STORAGE_KEY.USER_KEY)
 }
 
